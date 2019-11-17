@@ -1,0 +1,142 @@
+
+R2#show running-config
+Building configuration...
+
+
+Current configuration : 1729 bytes
+!
+! Last configuration change at 15:07:25 UTC Tue Oct 1 2019
+!
+version 15.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+no platform punt-keepalive disable-kernel-core
+!
+hostname R2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable secret 5 $1$RCG0$3ZJ5IZK2B.Dn/4vcEWyeh/
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+
+no ip domain lookup
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+multilink bundle-name authenticated
+!
+!
+!
+!
+license udi pid ISR4321/K9 sn FDO21323DPU
+!
+spanning-tree extend system-id
+!
+!
+redundancy
+ mode none
+!
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0/0
+ description Interface G0/0/0
+ ip address 209.165.201.1 255.255.255.0
+ negotiation auto
+!
+interface GigabitEthernet0/0/1
+ no ip address
+ negotiation auto
+!
+interface Serial0/1/0
+ description Interface S0/1/0
+ ip address 10.1.1.2 255.255.255.252
+!
+interface Serial0/1/1
+ description Interface S0/1/1
+ ip address 10.2.2.2 255.255.255.252
+ clock rate 64000
+!
+interface GigabitEthernet0
+ vrf forwarding Mgmt-intf
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router rip
+ version 2
+ network 10.0.0.0
+ network 209.165.201.0
+ default-information originate
+ no auto-summary
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+ip tftp source-interface GigabitEthernet0
+ip route 0.0.0.0 0.0.0.0 209.165.201.2
+!
+!
+!
+!
+!
+control-plane
+!
+banner motd ^CDO NOT ENTER^C
+!
+line con 0
+ password 7 05080F1C2243
+ login
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ password 7 05080F1C2243
+ login
+!
+!
+end
+
+R2#
